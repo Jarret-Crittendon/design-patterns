@@ -1,0 +1,11 @@
+"The Strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable.  This lets the algorithm vary independently from clients that use it."
+
+Associated principals:
+ENCAPSULATE WHAT VARIES	
+	"Identify the aspects of your application that vary and seprate them from what stays the same."
+
+PROGRAM TO AN INTERFACE, NOT AN IMPLEMENTATION
+	"Clients remain unaware of the specific types of objects they use, as long as the objects adhere to the interface that clients expect."
+
+FAVOR COMPOSITION OVER INHERITANCE
+	"Classes should achieve code reuse using composition rather than inheritance from a superclass."
