@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-enum ShareType { email, text, social_media };
+enum ShareType { email, text, social_media, none };
 
 class ShareBehavior {
 public:
@@ -59,6 +59,16 @@ public:
     };
 };
 
+class None: public ShareBehavior {
+public:
+    None():
+        ShareBehavior(none) { }
+
+    virtual void share() override {
+        std::cout << "Photo sharing has been disabled.\n";
+    };
+};
+
 class PhoneCameraApp {
 public:
     PhoneCameraApp(ShareType stype)
@@ -75,7 +85,7 @@ public:
 
 protected:
 
-    ShareBehavior* share_action = nullptr;
+    ShareBehavior* share_action = new None;
 };
 
 void PhoneCameraApp::take() {
@@ -91,7 +101,7 @@ void PhoneCameraApp::perform_share() {
 }
 
 void PhoneCameraApp::set_share(ShareType stype) {
-    if (share_action == nullptr || share_action->type() != stype) {
+    if (share_action->type() != stype) {
         switch (stype) {
             case email: {
                 delete share_action;
@@ -108,6 +118,13 @@ void PhoneCameraApp::set_share(ShareType stype) {
             case social_media: {
                 delete share_action;
                 share_action = new Social_Media;  
+                break; 
+            }
+
+            default: {
+                delete share_action;
+                share_action = new None;
+                std::cout << "Sharing disabled.\n";  
                 break; 
             }
         }

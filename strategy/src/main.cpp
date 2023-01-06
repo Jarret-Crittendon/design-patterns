@@ -7,6 +7,7 @@ int main() {
     bc.take();
     bc.save();
     bc.perform_share();
+    bc.set_share(none);
 
     std::cout << "\n\n";
 
