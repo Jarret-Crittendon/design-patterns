@@ -1,8 +1,8 @@
 #include "PhoneCameraApp.hpp"
 
 int main() {
-    BasicCameraApp bc(new Email);
-    CameraPlusApp cp(new Social_Media);
+    BasicCameraApp bc(email);
+    CameraPlusApp cp(social_media);
 
     bc.take();
     bc.save();
@@ -13,6 +13,6 @@ int main() {
     cp.take();
     cp.save();
     cp.perform_share();
-    cp.set_share(new Text);
+    cp.set_share(text);
     cp.perform_share();
 }
