@@ -133,7 +133,7 @@ void PhoneCameraApp::set_share(ShareType stype) {
 
 class BasicCameraApp : public PhoneCameraApp {
 public:
-    explicit BasicCameraApp(ShareType stype):
+    BasicCameraApp(ShareType stype):
         PhoneCameraApp(stype) { }
 
     void edit() override {
@@ -143,7 +143,7 @@ public:
 
 class CameraPlusApp : public PhoneCameraApp {
 public:
-    explicit CameraPlusApp(ShareType stype):
+    CameraPlusApp(ShareType stype):
         PhoneCameraApp(stype) { }
 
     void edit() override {
