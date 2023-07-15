@@ -1,0 +1,25 @@
+Update 1
+Temperature: 65
+Wind Speed: 0
+Pressure: 0
+
+Update 2
+Temperature: 65
+Wind Speed: 0
+Pressure: 15
+
+Update 3
+Temperature: 65
+Wind Speed: 15
+Pressure: 15
+
+Update 4
+Temperature: 65
+Wind Speed: 15
+Pressure: 35
+
+Update 5
+Temperature: 65
+Wind Speed: 77
+Pressure: 35
+

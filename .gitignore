@@ -1,2 +1,5 @@
 #Ignore .exe files
 *.exe
+
+#Ignore .json files
+*.json
