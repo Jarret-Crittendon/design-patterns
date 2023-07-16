@@ -3,9 +3,9 @@
 
 int main() {
     Weather_Station ws;
-    User_Interface ui;
-    Alert_System alerter;
-    Logger logger;
+    User_Interface ui(ws);
+    Alert_System alerter(ws);
+    Logger logger(ws);
 
     ws.register_observer(ui);
     ws.register_observer(alerter);

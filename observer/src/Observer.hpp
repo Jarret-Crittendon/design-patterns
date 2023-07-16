@@ -9,16 +9,13 @@
 #include <iostream>
 #include <fstream>
 
+class Subject;
+
 class Observer {
 public:
-    virtual void update(double a, double b, double c) = 0;
+    virtual void update() = 0;
 
     virtual ~Observer() { }
-
-protected:
-    double temperature;
-    double wind_speed;
-    double pressure;
 };
 
 class Subject {
@@ -67,7 +64,7 @@ public:
     }
     void notify_observers() override {
         for (auto observer : observers) {
-            observer->update(get_temp(), get_wind_speed(), get_pressure());
+            observer->update();
         }
     }
 
@@ -81,45 +78,41 @@ private:
 
 class User_Interface : public Observer {
 public:
-    User_Interface() = default;
+    User_Interface(Weather_Station& ws):
+        station(ws) { };
 
-    void update(double temp, double wind, double prs) override {
-        temperature = temp;
-        wind_speed = wind;
-        pressure = prs;
+    void update() override {
         display();
     }
 
     void display() const {
         std::cout << "New Information!\n";
-        std::cout << "Temperature: " << temperature << std::endl;
-        std::cout << "Wind Speed: " << wind_speed << std::endl;
-        std::cout << "Pressure: " << pressure << std::endl;
+        std::cout << "Temperature: " << station.get_temp() << std::endl;
+        std::cout << "Wind Speed: " << station.get_wind_speed() << std::endl;
+        std::cout << "Pressure: " << station.get_pressure() << std::endl;
         std::cout << std::endl;
     }
 
 private:
-    //Subject& subject;
+    Weather_Station& station;
 };
 
 class Logger : public Observer {
 public:
-    Logger(): update_count(0)
+    Logger(Weather_Station& ws):
+        update_count(0), station(ws)
         { logfile.open("./res/log.txt"); }
 
-    void update(double temp, double wind, double prs) override {
-        temperature = temp;
-        wind_speed = wind;
-        pressure = prs;
+    void update() override {
         log();
     }
 
     void log()  {
         update_count++;
         logfile << "Update " << update_count << "\n";
-        logfile << "Temperature: " << temperature << std::endl;
-        logfile << "Wind Speed: " << wind_speed << std::endl;
-        logfile << "Pressure: " << pressure << std::endl;
+        logfile << "Temperature: " << station.get_temp() << std::endl;
+        logfile << "Wind Speed: " << station.get_wind_speed() << std::endl;
+        logfile << "Pressure: " << station.get_pressure() << std::endl;
         logfile << std::endl;
     }
 
@@ -127,42 +120,40 @@ public:
 
 private:
     std::ofstream logfile;
-    //Subject& subject;
     int update_count;
+    Weather_Station& station;
 };
 
 class Alert_System : public Observer {
 public:
-    Alert_System() = default;
+    Alert_System(Weather_Station& ws):
+        station(ws) { }
 
-    void update(double temp, double wind, double prs) override {
-        temperature = temp;
-        wind_speed = wind;
-        pressure = prs;
+    void update() override {
         alert();
     }
 
     void alert() const {
-        const auto current_temp = abs(temperature - danger_temp);
-        const auto current_wind = abs(wind_speed - danger_wind);
-        const auto current_pressure = abs(pressure - danger_pressure);
+        const auto current_temp = std::abs(station.get_temp() - danger_temp);
+        const auto current_wind = std::abs(station.get_wind_speed() - danger_wind);
+        const auto current_pressure = std::abs(station.get_pressure() - danger_pressure);
 
         std::cout << "CURRENT STATUS\n";
-        if (temperature >= danger_temp) {
+        if (station.get_temp() >= danger_temp) {
             std::cout << "ALERT! Current temperature is " << current_temp
                       << " above safe levels. Keep cool!" << std::endl;
         } else {
             std::cout << "Temperature is at a safe level." << std::endl;
         }
 
-        if (wind_speed >= danger_wind) {
+        if (station.get_wind_speed() >= danger_wind) {
             std::cout << "ALERT! Current wind speed is " << current_wind
                       << " above safe levels. Stay indoors!" << std::endl;
         } else {
             std::cout << "Wind speeds are at a safe level." << std::endl;
         }
 
-        if (pressure >= danger_pressure) {
+        if (station.get_pressure() >= danger_pressure) {
             std::cout << "ALERT! Air pressure is " << current_pressure
                       << " above safe levels for humans. Get to a safer"
                       << " altitude!" << std::endl;
@@ -178,5 +169,5 @@ private:
     const double danger_wind = 75.0;
     const double danger_pressure = 35.0;
 
-    //Subject& subject;
+    Weather_Station& station;
 };
