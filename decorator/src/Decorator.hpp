@@ -8,16 +8,18 @@
 // Toppings: Cheese, Olives, Peppers
 
 #include <string>
+#include <memory>
 
 class Pizza {
 public:
-    Pizza() = default;
+    Pizza():
+        description("Strange pizza!") { }
     Pizza(const Pizza& rhs):
         description(rhs.description) { }
 
     virtual double cost() const = 0;
 
-    std::string get_desc() const {
+    virtual std::string get_desc() const {
         return description;
     }
 
