@@ -11,60 +11,95 @@
 
 class Pizza {
 public:
-    Pizza(std::string desc, double money):
-        description(desc), price(money) { }
+    Pizza() = default;
 
-    virtual double cost() = 0;
+    virtual double cost() const = 0;
+
+    std::string get_desc() const {
+        return description;
+    }
 
     virtual ~Pizza() { }
 
 protected:
     std::string description;
-    double price;
 };
+
+
+
 
 class ThinCrustPizza : public Pizza {
 public:
-    ThinCrustPizza():
-        Pizza("Thin crust pizza", 7.99) { }
+    ThinCrustPizza()
+        { description = "Thin crust pizza"; }
 
-private:
-
+        double cost() const override {
+            return 7.99;
+        }
 };
 
 class ThickCrustPizza : public Pizza {
 public:
-    ThickCrustPizza():
-        Pizza("Thick crust pizza", 9.99) { }
+    ThickCrustPizza()
+        { description = "Thick crust pizza"; }
 
-private:
-
+        double cost() const override {
+            return 10.99;
+        }
 };
 
 // Toppings - Decorator class
 
 class Toppings : public Pizza {
 public:
-    Toppings() = default;
-    virtual double cost() override = 0;
+    Toppings(const Pizza& pz):
+        pizza(pz) { }
+    
+    virtual std::string get_desc() const = 0;
 
     virtual ~Toppings() { }
 protected:
-    Pizza& pizza;
+    const Pizza& pizza;
 };
 
 class Cheese : public Toppings {
 public:
-    Cheese() = default;
+    Cheese(const Pizza& pz):
+        Toppings(pz) { }
 
-private:
+    double cost() const override {
+        return pizza.cost() + 1.05;
+    }
 
+    std::string get_desc() const override {
+        return pizza.get_desc() + ", extra cheese";
+    }
 };
 
 class Olives : public Toppings {
+public: 
+    Olives(const Pizza& pz):
+        Toppings(pz) { }
 
+    double cost() const override {
+        return pizza.cost() + 0.99;
+    }
+
+    std::string get_desc() const override {
+        return pizza.get_desc() + ", olives";
+    }
 };
 
 class Peppers : public Toppings {
+public: 
+    Peppers(const Pizza& pz):
+        Toppings(pz) { }
 
+    double cost() const override {
+        return pizza.cost() + 0.50;
+    }
+
+    std::string get_desc() const override {
+        return pizza.get_desc() + ", peppers";
+    }
 };
