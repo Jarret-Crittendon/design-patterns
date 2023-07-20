@@ -12,6 +12,8 @@
 class Pizza {
 public:
     Pizza() = default;
+    Pizza(const Pizza& rhs):
+        description(rhs.description) { }
 
     virtual double cost() const = 0;
 
@@ -52,54 +54,54 @@ public:
 
 class Toppings : public Pizza {
 public:
-    Toppings(const Pizza& pz):
+    explicit Toppings(std::shared_ptr<Pizza> pz):
         pizza(pz) { }
     
     virtual std::string get_desc() const = 0;
 
     virtual ~Toppings() { }
 protected:
-    const Pizza& pizza;
+    std::shared_ptr<Pizza> pizza;
 };
 
 class Cheese : public Toppings {
 public:
-    Cheese(const Pizza& pz):
+    explicit Cheese(std::shared_ptr<Pizza> pz):
         Toppings(pz) { }
 
     double cost() const override {
-        return pizza.cost() + 1.05;
+        return pizza->cost() + 1.05;
     }
 
     std::string get_desc() const override {
-        return pizza.get_desc() + ", extra cheese";
+        return pizza->get_desc() + ", extra cheese";
     }
 };
 
 class Olives : public Toppings {
 public: 
-    Olives(const Pizza& pz):
+    explicit Olives(std::shared_ptr<Pizza> pz):
         Toppings(pz) { }
 
     double cost() const override {
-        return pizza.cost() + 0.99;
+        return pizza->cost() + 0.75;
     }
 
     std::string get_desc() const override {
-        return pizza.get_desc() + ", olives";
+        return pizza->get_desc() + ", olives";
     }
 };
 
 class Peppers : public Toppings {
 public: 
-    Peppers(const Pizza& pz):
+    explicit Peppers(std::shared_ptr<Pizza> pz):
         Toppings(pz) { }
 
     double cost() const override {
-        return pizza.cost() + 0.50;
+        return pizza->cost() + 0.50;
     }
 
     std::string get_desc() const override {
-        return pizza.get_desc() + ", peppers";
+        return pizza->get_desc() + ", peppers";
     }
 };
