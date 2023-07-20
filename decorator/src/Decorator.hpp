@@ -27,9 +27,6 @@ protected:
     std::string description;
 };
 
-
-
-
 class ThinCrustPizza : public Pizza {
 public:
     ThinCrustPizza()
