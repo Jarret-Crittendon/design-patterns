@@ -4,8 +4,10 @@
 // "Programming Foundations: Design Patterns" - implementing the Observer
 // pattern
 
-// ThinCrustPizza, ThickCrustPizza
-// Toppings: Cheese, Olives, Peppers
+// Decorators have a base class, a concreateBase class that inherits from the base,
+// a decorator class that inherits from the base class, and a concreteDecorator that
+// inherits from the decorator.  The decorator has a member that is a pointer
+// to the base class.
 
 #include <string>
 #include <memory>
